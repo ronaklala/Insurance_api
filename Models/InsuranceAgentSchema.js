@@ -12,7 +12,9 @@ const AgentSchema = new mongoose.Schema(
     type: String,
     category: String,
     document: String,
-    is_verified: Boolean,
+    is_verified: Number,
+    credit: Number,
+    profile_img: "",
   },
   { timestamps: true }
 );

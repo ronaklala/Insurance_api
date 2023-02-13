@@ -2,6 +2,7 @@ const express = require("express");
 const Admin = require("../Models/AdminSchema");
 const router = express.Router();
 const CryptoJS = require("crypto-js");
+const User = require("../Models/UserSchema");
 
 router.post("/admin/add", (req, res) => {
   let { name, email, password, phone } = req.body;
@@ -42,6 +43,16 @@ router.get("/view-admins", (req, res) => {
       if (doc) {
         res.json(doc);
       }
+    });
+});
+
+router.get("/view-users", (req, res) => {
+  const users = User.find({})
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 });
 

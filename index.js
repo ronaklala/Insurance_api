@@ -23,5 +23,6 @@ app.use(bodyParser.json());
 //Calling Routes
 app.use(require("./Routes/adminRoutes"));
 app.use(require("./Routes/InsuranceAgentsRoutes"));
+app.use(require("./Routes/ClientRoutes"));
 
 app.listen(process.env.PORT || 5000);
