@@ -1,18 +1,25 @@
 const express = require("express");
 const Agent = require("../Models/InsuranceAgentSchema");
+const contactAgent = require("../Models/ContactAgentSchema");
 const router = express.Router();
 
 router.post("/agent/agent_register", (req, res) => {
-  const agent = new Agent(req.body);
+  const check = Agent.find({ email: req.body.email }).then((doc) => {
+    if (doc.length === 0) {
+      const agent = new Agent(req.body);
 
-  agent
-    .save()
-    .then((doc) => {
-      res.status(200).json({ message: "Added" });
-    })
-    .catch((err) => {
-      res.status(400).json({ message: "Internal Server Error" });
-    });
+      agent
+        .save()
+        .then((doc) => {
+          res.status(200).json({ message: "Added" });
+        })
+        .catch((err) => {
+          res.status(400).json({ message: "Internal Server Error" });
+        });
+    } else {
+      res.status(403).json({ message: "Already Exist" });
+    }
+  });
 });
 
 router.get("/agent/get_agents_data_no_verification", (req, res) => {
@@ -50,44 +57,37 @@ router.post("/admin/agent_login", (req, res) => {
   });
 });
 
-router.post("/agent/update_agent/:id/:msg", (req, res) => {
-  let msg;
-  if (req.params.msg === "approve") {
-    msg = 1;
-  } else {
-    msg = 2;
-  }
+router.get(
+  "/agent/get_clients/",
+  (req, res) => {
+    let doc = [];
+    const posts = contactAgent
+      .aggregate([
+        {
+          $match: { result: { $lte: 0 } },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "uid",
+            foreignField: "_id",
+            as: "user_details",
+          },
+        },
+      ])
+      .then((data) => {
+        res.json(data);
+      });
+  },
+  []
+);
 
-  const agent = Agent.findByIdAndUpdate(req.params.id, {
-    is_verified: msg,
-  }).then((doc) => {
-    res.status(200).json({ message: "Done" });
+router.post("/agent/StartWork/:id", (req, res) => {
+  contactAgent.findByIdAndUpdate(req.params.id, { result: 1 }).then((doc) => {
+    Agent.findByIdAndUpdate(doc.aid, { $inc: { credit: -1 } }).then((doc) => {
+      res.status(200).json({ message: "Started Work" });
+    });
   });
-});
-
-router.get("/client/agents/get", (req, res) => {
-  const agents = Agent.find({ is_verified: 1, credit: { $gte: 1 } })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-
-router.post("/client/agent/get/:cat/:type/:city", (req, res) => {
-  Agent.find({
-    category: req.params.cat,
-    type: req.params.type,
-    city: req.params.city,
-    credit: { $gte: 1 },
-  })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
 });
 
 module.exports = router;

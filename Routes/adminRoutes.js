@@ -3,6 +3,7 @@ const Admin = require("../Models/AdminSchema");
 const router = express.Router();
 const CryptoJS = require("crypto-js");
 const User = require("../Models/UserSchema");
+const Agent = require("../Models/InsuranceAgentSchema");
 
 router.post("/admin/add", (req, res) => {
   let { name, email, password, phone } = req.body;
@@ -54,6 +55,29 @@ router.get("/view-users", (req, res) => {
     .catch((err) => {
       res.json(err);
     });
+});
+
+router.get("/admin/home", (req, res) => {
+  let data = {
+    users: null,
+    unverified_agents: null,
+    verified_agents: null,
+    admins: null,
+  };
+
+  Promise.all([
+    User.count().exec(),
+    Agent.find({ is_verified: 0 }).count().exec(),
+    Agent.find({ is_verified: 1 }).count().exec(),
+    Admin.count().exec(),
+  ]).then((counts) => {
+    (data.users = counts[0]),
+      (data.unverified_agents = counts[1]),
+      (data.verified_agents = counts[2]),
+      (data.admins = counts[3]);
+
+    res.json(data);
+  });
 });
 
 module.exports = router;
