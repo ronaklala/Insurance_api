@@ -80,4 +80,10 @@ router.get("/admin/home", (req, res) => {
   });
 });
 
+router.get("/agents/get", (req, res) => {
+  Agent.find({}).then((doc) => {
+    res.json(doc);
+  });
+});
+
 module.exports = router;

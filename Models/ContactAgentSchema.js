@@ -4,6 +4,9 @@ const { ObjectId } = mongoose.Schema;
 const contactAgentSchema = new mongoose.Schema(
   {
     uid: ObjectId,
+    type: String,
+    Category: String,
+    City: String,
     aid: ObjectId,
     result: Number,
   },

@@ -15,6 +15,7 @@ const AgentSchema = new mongoose.Schema(
     is_verified: Number,
     credit: Number,
     profile_img: "",
+    isVisible: Number,
   },
   { timestamps: true }
 );
