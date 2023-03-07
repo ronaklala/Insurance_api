@@ -2,6 +2,7 @@ const express = require("express");
 const Agent = require("../Models/InsuranceAgentSchema");
 const contactAgent = require("../Models/ContactAgentSchema");
 const Payment = require("../Models/PaymentModel");
+const { default: mongoose } = require("mongoose");
 const router = express.Router();
 const stripe = require("stripe")(
   "sk_test_51JGN72SBUj7Zk1FJw3eNZPtEhgK7VeDuUAu1rQPlrw1dW8qfFFaTxfUesKFfRRpC0ZTob0aDgzx4FEAk8DPldocF00lzYh1dQB"
@@ -96,11 +97,17 @@ router.get(
 );
 
 router.post("/agent/StartWork/:id/:agent", (req, res) => {
-  contactAgent
-    .findByIdAndUpdate(req.params.id, { result: 1, aid: req.params.agent })
-    .then((doc) => {
-      res.status(200).json({ message: "Done" });
-    });
+  contactAgent.findById(req.params.id).then((doc) => {
+    if (doc.aid === undefined) {
+      contactAgent
+        .findByIdAndUpdate(req.params.id, { result: 1, aid: req.params.agent })
+        .then((doc) => {
+          res.status(200).json({ message: "Done" });
+        });
+    } else {
+      res.status(405).json({ message: "Already Taken" });
+    }
+  });
 });
 
 router.post("/update/agent/", (req, res) => {
@@ -128,8 +135,7 @@ router.post("/create-checkout-session/:pid/:plan/:aid", async (req, res) => {
         req.params.plan +
         "/" +
         req.params.aid +
-        "/bdc1e778af50d37a791b04decdff766c806ed59c40bc240ef12eaf15a36ce8a75572505f26fa588ad4c9602304b58fce9/" +
-        stripe.checkout.sessions.id,
+        "/bdc1e778af50d37a791b04decdff766c806ed59c40bc240ef12eaf15a36ce8a75572505f26fa588ad4c9602304b58fce9",
       cancel_url: `${YOUR_DOMAIN}/canceled`,
     })
     .then((doc) => {
@@ -180,6 +186,30 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
 router.get("/agent/get_txn/:id", (req, res) => {
   Payment.find({ aid: req.params.id }).then((doc) => {
     res.json(doc);
+  });
+});
+
+router.get("/agent/get_headers/:aid", (req, res) => {
+  const id = mongoose.mongo.ObjectId(req.params.aid);
+
+  let data = {
+    nop: "",
+    tca: "",
+    tcd: "",
+    credits: "",
+  };
+
+  Promise.all([
+    Payment.find({ aid: id }).count().exec(),
+    Agent.find({ _id: id }).exec(),
+    contactAgent.count().exec(),
+    contactAgent.find({ aid: id }).count().exec(),
+  ]).then((counts) => {
+    (data.nop = counts[0]),
+      (data.tca = counts[2]),
+      (data.tcd = counts[3]),
+      (data.credits = counts[1][0].credit),
+      res.json(data);
   });
 });
 

@@ -4,6 +4,8 @@ const router = express.Router();
 const CryptoJS = require("crypto-js");
 const User = require("../Models/UserSchema");
 const Agent = require("../Models/InsuranceAgentSchema");
+const Payment = require("../Models/PaymentModel");
+const contactAgent = require("../Models/ContactAgentSchema");
 
 router.post("/admin/add", (req, res) => {
   let { name, email, password, phone } = req.body;
@@ -63,6 +65,9 @@ router.get("/admin/home", (req, res) => {
     unverified_agents: null,
     verified_agents: null,
     admins: null,
+    nop: null,
+    tca: null,
+    tcd: null,
   };
 
   Promise.all([
@@ -70,12 +75,33 @@ router.get("/admin/home", (req, res) => {
     Agent.find({ is_verified: 0 }).count().exec(),
     Agent.find({ is_verified: 1 }).count().exec(),
     Admin.count().exec(),
+    Payment.find({}).count().exec(),
+    contactAgent.count().exec(),
+    contactAgent.find({ result: 1 }).count().exec(),
   ]).then((counts) => {
     (data.users = counts[0]),
       (data.unverified_agents = counts[1]),
       (data.verified_agents = counts[2]),
-      (data.admins = counts[3]);
+      (data.admins = counts[3]),
+      (data.nop = counts[4]),
+      (data.tca = counts[5]),
+      (data.tcd = counts[6]);
 
+    res.json(data);
+  });
+});
+
+router.get("/admins/payments/get", (req, res) => {
+  const posts = Payment.aggregate([
+    {
+      $lookup: {
+        from: "agents",
+        localField: "aid",
+        foreignField: "_id",
+        as: "agent_details",
+      },
+    },
+  ]).then((data) => {
     res.json(data);
   });
 });
