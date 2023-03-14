@@ -191,7 +191,7 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
         City: req.params.city,
       })
       .then((doc) => {
-        if (doc.length === 1) {
+        if (doc.length > 0) {
           res.status(405).json({ message: "Already" });
         } else {
           Agent.find({
