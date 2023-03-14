@@ -92,7 +92,7 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
     });
 
     // transporter.use("compile", hbs(handlebarOptions));
-
+    console.log(emails);
     var mailOptions = {
       from: "EmailBot",
       to: emails,
@@ -181,11 +181,6 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
       </body>
       
       </html>`,
-      context: {
-        username: req.body.username,
-        email: req.body.email,
-        message: req.body.message,
-      },
     };
 
     contactAgent
@@ -223,7 +218,13 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
                       res.status(200).json({ message: "Done" });
                       transporter.sendMail(
                         mailOptions,
-                        async function (error, info) {}
+                        async function (error, info) {
+                          if (error) {
+                            console.log(error);
+                          } else {
+                            console.log("Mail Sent" + info);
+                          }
+                        }
                       );
                     });
                   });
