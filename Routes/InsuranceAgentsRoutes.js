@@ -230,10 +230,13 @@ router.post("/agent/StartWork/:id/:agent", (req, res) => {
                 
                 </html>`,
               };
-              transporter.sendMail(
-                mailOptions,
-                async function (error, info) {}
-              );
+              transporter.sendMail(mailOptions, async function (error, info) {
+                if (error) {
+                  console.log("Error" + error);
+                } else {
+                  console.log("Mail Sent" + info);
+                }
+              });
             });
           });
         });
