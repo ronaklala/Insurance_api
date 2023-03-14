@@ -12,7 +12,7 @@ const stripe = require("stripe")(
 const app = express();
 app.use(express.static("public"));
 
-const YOUR_DOMAIN = "https://insurance-agents.vercel.app";
+const YOUR_DOMAIN = "https://insurance-api-five.vercel.app";
 
 router.post("/agent/agent_register", (req, res) => {
   const check = Agent.find({ email: req.body.email }).then((doc) => {
@@ -288,7 +288,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.plan = req.params.plan;
 
         payment.save().then((doc) => {
-          res.redirect("http://localhost:3001/Payment-Success");
+          res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
     );
@@ -300,7 +300,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.plan = req.params.plan;
 
         payment.save().then((doc) => {
-          res.redirect("http://localhost:3001/Payment-Success");
+          res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
     );
