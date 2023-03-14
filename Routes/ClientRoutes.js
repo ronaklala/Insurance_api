@@ -91,10 +91,8 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
         : console.log(`=== Server is ready to take messages: ${success} ===`);
     });
 
-    // transporter.use("compile", hbs(handlebarOptions));
-    console.log(emails);
     var mailOptions = {
-      from: "EmailBot",
+      from: "Insurnace Email BOT 👥 <insuranceproject377@gmail.com>",
       to: emails,
       subject: "Client Request Appeared",
       html: `<!doctype html>

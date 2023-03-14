@@ -136,7 +136,7 @@ router.post("/agent/StartWork/:id/:agent", (req, res) => {
               // transporter.use("compile", hbs(handlebarOptions));
 
               var mailOptions = {
-                from: "EmailBot",
+                from: "Insurnace Email BOT 👥 <insuranceproject377@gmail.com>",
                 to: data.client.email,
                 subject: "Agent Replied",
                 html: `<!doctype html>
