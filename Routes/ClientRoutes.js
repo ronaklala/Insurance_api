@@ -191,7 +191,7 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
         City: req.params.city,
       })
       .then((doc) => {
-        if (doc.length > 0) {
+        if (doc.length >= 1) {
           res.status(405).json({ message: "Already" });
         } else {
           Agent.find({
@@ -207,27 +207,26 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
                 for (let i = 0; i < doc.length; i++) {
                   Agent.findByIdAndUpdate(doc[i]._id, {
                     $inc: { credit: -1 },
-                  }).then(() => {
-                    const newcontact = new contactAgent();
-                    newcontact.uid = req.params.id;
-                    newcontact.result = 0;
-                    newcontact.City = req.params.city;
-                    newcontact.Category = req.params.cat;
-                    newcontact.type = req.params.type;
-                    newcontact.save().then(() => {
-                      res.status(200).json({ message: "Done" });
-                      transporter.sendMail(
-                        mailOptions,
-                        async function (error, info) {
-                          if (error) {
-                            console.log(error);
-                          } else {
-                            console.log("Mail Sent" + info);
-                          }
-                        }
-                      );
-                    });
+                  }).then(() => {});
+                  const newcontact = new contactAgent();
+                  newcontact.uid = req.params.id;
+                  newcontact.result = 0;
+                  newcontact.City = req.params.city;
+                  newcontact.Category = req.params.cat;
+                  newcontact.type = req.params.type;
+                  newcontact.save().then(() => {
+                    res.status(200).json({ message: "Done" });
                   });
+                  transporter.sendMail(
+                    mailOptions,
+                    async function (error, info) {
+                      if (error) {
+                        console.log(error);
+                      } else {
+                        console.log("Mail Sent" + info);
+                      }
+                    }
+                  );
                 }
               }
             })
