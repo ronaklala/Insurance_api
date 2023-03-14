@@ -215,7 +215,6 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
                     newcontact.Category = req.params.cat;
                     newcontact.type = req.params.type;
                     newcontact.save().then(() => {
-                      res.status(200).json({ message: "Done" });
                       transporter.sendMail(
                         mailOptions,
                         async function (error, info) {
@@ -226,6 +225,7 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
                           }
                         }
                       );
+                      res.status(200).json({ message: "Done" });
                     });
                   });
                 }
