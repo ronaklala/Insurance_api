@@ -24,8 +24,8 @@ router.post("/agent/agent_register", (req, res) => {
       agent
         .save()
         .then((doc) => {
-          res.status(200).json({ message: "Added" });
           sendRegistrationMail(req.body);
+          res.status(200).json({ message: "Added" });
         })
         .catch((err) => {
           res.status(400).json({ message: "Internal Server Error" });
