@@ -24,7 +24,7 @@ router.post("/agent/agent_register", (req, res) => {
         .then((doc) => {
           let emails = [];
 
-          Admin.find({}).then(async (doc) => {
+          Admin.find({}).then((doc) => {
             for (let i = 0; i < doc.length; i++) {
               emails.push(doc[i].email);
             }
@@ -37,14 +37,13 @@ router.post("/agent/agent_register", (req, res) => {
                 pass: "elpgvsftguesyvcy",
               },
             });
-            await new Promise((resolve, reject) => {
-              transporter.verify((err, success) => {
-                err
-                  ? console.log(err)
-                  : console.log(
-                      `=== Server is ready to take messages: ${success} ===`
-                    );
-              });
+
+            transporter.verify((err, success) => {
+              err
+                ? console.log(err)
+                : console.log(
+                    `=== Server is ready to take messages: ${success} ===`
+                  );
             });
 
             var mailOptions = {
@@ -949,14 +948,12 @@ router.post("/agent/agent_register", (req, res) => {
                 </html>
                 `,
             };
-            await new Promise((resolve, reject) => {
-              transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                  console.log("Error" + error);
-                } else {
-                  console.log("Mail Sent" + info);
-                }
-              });
+            transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                console.log("Error" + error);
+              } else {
+                console.log("Mail Sent" + info);
+              }
             });
           });
           res.status(200).json({ message: "Added" });
@@ -1167,7 +1164,7 @@ router.post("/agent/StartWork/:id/:agent", (req, res) => {
                 
                 </html>`,
               };
-              transporter.sendMail(mailOptions, async function (error, info) {
+              transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                   console.log("Error" + error);
                 } else {
@@ -1224,7 +1221,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         const payment = new Payment();
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
-        payment.save().then(async (docs) => {
+        payment.save().then((docs) => {
           var transporter = nodemailer.createTransport({
             service: "gmail",
             port: 465,
@@ -1236,14 +1233,12 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             host: "smtp.gmail.com",
           });
 
-          await new Promise((resolve, reject) => {
-            transporter.verify((err, success) => {
-              err
-                ? console.log(err)
-                : console.log(
-                    `=== Server is ready to take messages: ${success} ===`
-                  );
-            });
+          transporter.verify((err, success) => {
+            err
+              ? console.log(err)
+              : console.log(
+                  `=== Server is ready to take messages: ${success} ===`
+                );
           });
 
           var mailOptions = {
@@ -2155,14 +2150,13 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             </html>
              `,
           };
-          await new Promise((resolve, reject) => {
-            transporter.sendMail(mailOptions, function (error, info) {
-              if (error) {
-                console.log("Error" + error);
-              } else {
-                console.log("Mail Sent" + info);
-              }
-            });
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log("Error" + error);
+            } else {
+              console.log("Mail Sent" + info);
+            }
           });
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
@@ -2175,7 +2169,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
 
-        payment.save().then(async (docs) => {
+        payment.save().then((docs) => {
           var transporter = nodemailer.createTransport({
             service: "gmail",
             port: 465,
@@ -2187,14 +2181,12 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             host: "smtp.gmail.com",
           });
 
-          await new Promise((resolve, reject) => {
-            transporter.verify((err, success) => {
-              err
-                ? console.log(err)
-                : console.log(
-                    `=== Server is ready to take messages: ${success} ===`
-                  );
-            });
+          transporter.verify((err, success) => {
+            err
+              ? console.log(err)
+              : console.log(
+                  `=== Server is ready to take messages: ${success} ===`
+                );
           });
 
           var mailOptions = {
@@ -3106,14 +3098,13 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             </html>
              `,
           };
-          await new Promise((resolve, reject) => {
-            transporter.sendMail(mailOptions, function (error, info) {
-              if (error) {
-                console.log("Error" + error);
-              } else {
-                console.log("Mail Sent" + info);
-              }
-            });
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log("Error" + error);
+            } else {
+              console.log("Mail Sent" + info);
+            }
           });
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
@@ -3126,7 +3117,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
 
-        payment.save().then(async (docs) => {
+        payment.save().then((docs) => {
           var transporter = nodemailer.createTransport({
             service: "gmail",
             port: 465,
@@ -3138,14 +3129,12 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             host: "smtp.gmail.com",
           });
 
-          await new Promise((resolve, reject) => {
-            transporter.verify((err, success) => {
-              err
-                ? console.log(err)
-                : console.log(
-                    `=== Server is ready to take messages: ${success} ===`
-                  );
-            });
+          transporter.verify((err, success) => {
+            err
+              ? console.log(err)
+              : console.log(
+                  `=== Server is ready to take messages: ${success} ===`
+                );
           });
 
           var mailOptions = {
@@ -4057,14 +4046,13 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             </html>
              `,
           };
-          await new Promise((resolve, reject) => {
-            transporter.sendMail(mailOptions, function (error, info) {
-              if (error) {
-                console.log("Error" + error);
-              } else {
-                console.log("Mail Sent" + info);
-              }
-            });
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log("Error" + error);
+            } else {
+              console.log("Mail Sent" + info);
+            }
           });
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
