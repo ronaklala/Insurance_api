@@ -6,6 +6,7 @@ var bodyParser = require("body-parser");
 const app = express();
 app.use(cors());
 
+mongoose.set("strictQuery", false);
 const DB =
   "mongodb+srv://Warrior:Ronak3103@mydb.tgsvt.mongodb.net/Insurance?retryWrites=true&w=majority";
 mongoose
@@ -16,10 +17,8 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
-app.use(bodyParser.json());
 
 //Calling Routes
 app.use(require("./Routes/adminRoutes"));
