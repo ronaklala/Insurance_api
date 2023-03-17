@@ -14,7 +14,7 @@ const stripe = require("stripe")(
 const app = express();
 app.use(express.static("public"));
 
-const YOUR_DOMAIN = "http://localhost:5000";
+const YOUR_DOMAIN = "https://insurance-api-five.vercel.app";
 
 router.post("/agent/agent_register", (req, res) => {
   const check = Agent.find({ email: req.body.email }).then((doc) => {
