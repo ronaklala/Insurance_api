@@ -45,7 +45,6 @@ router.post("/agent/update_agent/:id/:msg", (req, res) => {
   let msg;
   if (req.params.msg === "approve") {
     msg = 1;
-    ActivationMail(msg, req.params.id);
   } else {
     msg = 2;
   }
@@ -53,8 +52,8 @@ router.post("/agent/update_agent/:id/:msg", (req, res) => {
   const agent = Agent.findByIdAndUpdate(req.params.id, {
     is_verified: msg,
   }).then((doc) => {
-    res.status(200).json({ message: "Done" });
     ActivationMail(msg, req.params.id);
+    res.status(200).json({ message: "Done" });
   });
 });
 

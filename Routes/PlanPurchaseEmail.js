@@ -1,7 +1,7 @@
 var nodemailer = require("nodemailer");
 
-const PlanPurchase = (email, plan) => {
-  var transporter = nodemailer.createTransport({
+const PlanPurchase = async (email, plan) => {
+  var transporter = await nodemailer.createTransport({
     service: "gmail",
     port: 465,
     auth: {
@@ -9,7 +9,7 @@ const PlanPurchase = (email, plan) => {
       pass: "elpgvsftguesyvcy",
     },
   });
-  transporter.verify((err, success) => {
+  await transporter.verify((err, success) => {
     err
       ? console.log(err)
       : console.log(`=== Server is ready to take messages: ${success} ===`);
@@ -927,7 +927,7 @@ const PlanPurchase = (email, plan) => {
     </html>
      `,
   };
-  transporter.sendMail(mailOptions, async function (error, info) {
+  await transporter.sendMail(mailOptions, async function (error, info) {
     if (error) {
       console.log("Error" + error);
     } else {
