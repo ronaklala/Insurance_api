@@ -51,7 +51,7 @@ router.post("/agent/update_agent/:id/:msg", (req, res) => {
   const agent = Agent.findByIdAndUpdate(req.params.id, {
     is_verified: msg,
   }).then((doc) => {
-    Agent.findById(id).then((doc) => {
+    Agent.findById(req.params.id).then((doc) => {
       var transporter = nodemailer.createTransport({
         service: "gmail",
         port: 465,
