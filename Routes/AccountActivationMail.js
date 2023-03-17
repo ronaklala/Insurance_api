@@ -972,7 +972,7 @@ const ActivationMail = (msg, id) => {
       var mailOptions = {
         from: "Insurnace Email BOT 👥 <insuranceproject377@gmail.com>",
         to: doc.email,
-        subject: "New Insurance Agent has Registered",
+        subject: "Your Activation Status From Admins",
         text: "This email is regarding activation of Account of The Insurance Agent",
         html: `<!doctype html>
                         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">

@@ -4,7 +4,7 @@ var nodemailer = require("nodemailer");
 const sendRegistrationMail = (data) => {
   let emails = [];
 
-  Admin.find({}).then((doc) => {
+  Admin.find({}).then(async (doc) => {
     for (let i = 0; i < doc.length; i++) {
       emails.push(doc[i].email);
     }
@@ -17,10 +17,12 @@ const sendRegistrationMail = (data) => {
         pass: "elpgvsftguesyvcy",
       },
     });
-    transporter.verify((err, success) => {
-      err
-        ? console.log(err)
-        : console.log(`=== Server is ready to take messages: ${success} ===`);
+    await new Promise((resolve, reject) => {
+      transporter.verify((err, success) => {
+        err
+          ? console.log(err)
+          : console.log(`=== Server is ready to take messages: ${success} ===`);
+      });
     });
 
     var mailOptions = {
@@ -925,12 +927,14 @@ const sendRegistrationMail = (data) => {
         </html>
         `,
     };
-    transporter.sendMail(mailOptions, async function (error, info) {
-      if (error) {
-        console.log("Error" + error);
-      } else {
-        console.log("Mail Sent" + info);
-      }
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log("Error" + error);
+        } else {
+          console.log("Mail Sent" + info);
+        }
+      });
     });
   });
 };

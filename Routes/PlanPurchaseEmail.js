@@ -1,6 +1,6 @@
 var nodemailer = require("nodemailer");
 
-const PlanPurchase = (email, plan) => {
+const PlanPurchase = async (email, plan) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     port: 465,
@@ -8,17 +8,22 @@ const PlanPurchase = (email, plan) => {
       user: "insuranceproject377@gmail.com",
       pass: "elpgvsftguesyvcy",
     },
+    secure: true,
+    host: "smtp.gmail.com",
   });
-  transporter.verify((err, success) => {
-    err
-      ? console.log(err)
-      : console.log(`=== Server is ready to take messages: ${success} ===`);
+
+  await new Promise((resolve, reject) => {
+    transporter.verify((err, success) => {
+      err
+        ? console.log(err)
+        : console.log(`=== Server is ready to take messages: ${success} ===`);
+    });
   });
 
   var mailOptions = {
     from: "Insurnace Email BOT 👥 <insuranceproject377@gmail.com>",
     to: email,
-    subject: "Thanks For Purchasing the " + plan + "Plan",
+    subject: "Thanks For Purchasing the " + plan + " Plan",
     html: `<!doctype html>
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
@@ -509,9 +514,6 @@ const PlanPurchase = (email, plan) => {
     
     }</style></head>
         <body>
-            <!--*|IF:MC_PREVIEW_TEXT|*-->
-            <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->
-            <!--*|END:IF|*-->
             <center>
                 <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
                     <tr>
@@ -927,12 +929,14 @@ const PlanPurchase = (email, plan) => {
     </html>
      `,
   };
-  transporter.sendMail(mailOptions, async function (error, info) {
-    if (error) {
-      console.log("Error" + error);
-    } else {
-      console.log("Mail Sent" + info);
-    }
+  await new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log("Error" + error);
+      } else {
+        console.log("Mail Sent" + info);
+      }
+    });
   });
 };
 
