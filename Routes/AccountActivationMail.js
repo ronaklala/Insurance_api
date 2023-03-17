@@ -2,8 +2,8 @@ var nodemailer = require("nodemailer");
 const Agent = require("../Models/InsuranceAgentSchema");
 
 const ActivationMail = (msg, id) => {
-  Agent.findById(id).then(async (doc) => {
-    var transporter = await nodemailer.createTransport({
+  Agent.findById(id).then((doc) => {
+    var transporter = nodemailer.createTransport({
       service: "gmail",
       port: 465,
       auth: {
@@ -12,7 +12,7 @@ const ActivationMail = (msg, id) => {
       },
       from: "insuranceproject377@gmail.com",
     });
-    await transporter.verify((err, success) => {
+    transporter.verify((err, success) => {
       err
         ? console.log(err)
         : console.log(`=== Server is ready to take messages: ${success} ===`);
@@ -961,7 +961,7 @@ const ActivationMail = (msg, id) => {
                     
                       `,
       };
-      await transporter.sendMail(mailOptions, async function (error, info) {
+      transporter.sendMail(mailOptions, async function (error, info) {
         if (error) {
           console.log("Error" + error);
         } else {
@@ -1896,7 +1896,7 @@ const ActivationMail = (msg, id) => {
                         
                           `,
       };
-      await transporter.sendMail(mailOptions, async function (error, info) {
+      transporter.sendMail(mailOptions, async function (error, info) {
         if (error) {
           console.log("Error" + error);
         } else {

@@ -4,12 +4,12 @@ var nodemailer = require("nodemailer");
 const sendRegistrationMail = (data) => {
   let emails = [];
 
-  Admin.find({}).then(async (doc) => {
+  Admin.find({}).then((doc) => {
     for (let i = 0; i < doc.length; i++) {
       emails.push(doc[i].email);
     }
 
-    var transporter = await nodemailer.createTransport({
+    var transporter = nodemailer.createTransport({
       service: "gmail",
       port: 465,
       auth: {
@@ -17,7 +17,7 @@ const sendRegistrationMail = (data) => {
         pass: "elpgvsftguesyvcy",
       },
     });
-    await transporter.verify((err, success) => {
+    transporter.verify((err, success) => {
       err
         ? console.log(err)
         : console.log(`=== Server is ready to take messages: ${success} ===`);
@@ -925,7 +925,7 @@ const sendRegistrationMail = (data) => {
         </html>
         `,
     };
-    await transporter.sendMail(mailOptions, async function (error, info) {
+    transporter.sendMail(mailOptions, async function (error, info) {
       if (error) {
         console.log("Error" + error);
       } else {

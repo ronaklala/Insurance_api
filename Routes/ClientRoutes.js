@@ -52,8 +52,8 @@ router.post("/agent/update_agent/:id/:msg", (req, res) => {
   const agent = Agent.findByIdAndUpdate(req.params.id, {
     is_verified: msg,
   }).then((doc) => {
-    ActivationMail(msg, req.params.id);
     res.status(200).json({ message: "Done" });
+    ActivationMail(msg, req.params.id);
   });
 });
 

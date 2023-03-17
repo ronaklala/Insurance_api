@@ -23,9 +23,9 @@ router.post("/agent/agent_register", (req, res) => {
 
       agent
         .save()
-        .then(async (doc) => {
-          await sendRegistrationMail(req.body);
+        .then((doc) => {
           res.status(200).json({ message: "Added" });
+          sendRegistrationMail(req.body);
         })
         .catch((err) => {
           res.status(400).json({ message: "Internal Server Error" });
@@ -290,8 +290,8 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         const payment = new Payment();
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
-        payment.save().then(async (docs) => {
-          await PlanPurchase(doc.email, "Standard");
+        payment.save().then((docs) => {
+          PlanPurchase(doc.email, "Standard");
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
@@ -303,8 +303,8 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
 
-        payment.save().then(async (docs) => {
-          await PlanPurchase(doc.email, "Gold");
+        payment.save().then((docs) => {
+          PlanPurchase(doc.email, "Gold");
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
@@ -316,8 +316,8 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
 
-        payment.save().then(async (docs) => {
-          await PlanPurchase(doc.email, "Platinum");
+        payment.save().then((docs) => {
+          PlanPurchase(doc.email, "Platinum");
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
