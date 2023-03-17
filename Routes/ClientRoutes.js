@@ -4,6 +4,7 @@ const contactAgent = require("../Models/ContactAgentSchema");
 const Agent = require("../Models/InsuranceAgentSchema");
 const User = require("../Models/UserSchema");
 var nodemailer = require("nodemailer");
+const ActivationMail = require("./AccountActivationMail");
 const router = express.Router();
 
 router.post("/client/user/add", (req, res) => {
@@ -44,6 +45,7 @@ router.post("/agent/update_agent/:id/:msg", (req, res) => {
   let msg;
   if (req.params.msg === "approve") {
     msg = 1;
+    ActivationMail(msg, req.params.id);
   } else {
     msg = 2;
   }
@@ -52,6 +54,7 @@ router.post("/agent/update_agent/:id/:msg", (req, res) => {
     is_verified: msg,
   }).then((doc) => {
     res.status(200).json({ message: "Done" });
+    ActivationMail(msg, req.params.id);
   });
 });
 

@@ -4,7 +4,9 @@ const contactAgent = require("../Models/ContactAgentSchema");
 const Payment = require("../Models/PaymentModel");
 const { default: mongoose } = require("mongoose");
 const User = require("../Models/UserSchema");
+const PlanPurchase = require("./PlanPurchaseEmail");
 var nodemailer = require("nodemailer");
+const sendRegistrationMail = require("./newAgentRegistrationMail");
 const router = express.Router();
 const stripe = require("stripe")(
   "sk_test_51JGN72SBUj7Zk1FJw3eNZPtEhgK7VeDuUAu1rQPlrw1dW8qfFFaTxfUesKFfRRpC0ZTob0aDgzx4FEAk8DPldocF00lzYh1dQB"
@@ -12,7 +14,7 @@ const stripe = require("stripe")(
 const app = express();
 app.use(express.static("public"));
 
-const YOUR_DOMAIN = "https://insurance-api-five.vercel.app";
+const YOUR_DOMAIN = "http://localhost:5000";
 
 router.post("/agent/agent_register", (req, res) => {
   const check = Agent.find({ email: req.body.email }).then((doc) => {
@@ -23,6 +25,7 @@ router.post("/agent/agent_register", (req, res) => {
         .save()
         .then((doc) => {
           res.status(200).json({ message: "Added" });
+          sendRegistrationMail(req.body);
         })
         .catch((err) => {
           res.status(400).json({ message: "Internal Server Error" });
@@ -283,11 +286,12 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
   if (req.params.plan === "standard") {
     Agent.findByIdAndUpdate(req.params.aid, { $inc: { credit: 20 } }).then(
       (doc) => {
+        /* Creating a new payment object and saving it to the database. */
         const payment = new Payment();
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
-
-        payment.save().then((doc) => {
+        payment.save().then((docs) => {
+          PlanPurchase(doc.email, "Standard");
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
@@ -299,7 +303,8 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
 
-        payment.save().then((doc) => {
+        payment.save().then((docs) => {
+          PlanPurchase(doc.email, "Gold");
           res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
@@ -311,8 +316,9 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
         payment.aid = req.params.aid;
         payment.plan = req.params.plan;
 
-        payment.save().then((doc) => {
-          res.redirect("http://localhost:3001/Payment-Success");
+        payment.save().then((docs) => {
+          PlanPurchase(doc.email, "Platinum");
+          res.redirect("https://insurance-agents.vercel.app/Payment-Success");
         });
       }
     );
