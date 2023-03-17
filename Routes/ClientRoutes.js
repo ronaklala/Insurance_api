@@ -208,16 +208,16 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
                   Agent.findByIdAndUpdate(doc[i]._id, {
                     $inc: { credit: -1 },
                   }).then(() => {});
-                  const newcontact = new contactAgent();
-                  newcontact.uid = req.params.id;
-                  newcontact.result = 0;
-                  newcontact.City = req.params.city;
-                  newcontact.Category = req.params.cat;
-                  newcontact.type = req.params.type;
-                  newcontact.save().then(() => {
-                    res.status(200).json({ message: "Done" });
-                  });
                 }
+                const newcontact = new contactAgent();
+                newcontact.uid = req.params.id;
+                newcontact.result = 0;
+                newcontact.City = req.params.city;
+                newcontact.Category = req.params.cat;
+                newcontact.type = req.params.type;
+                newcontact.save().then(() => {
+                  res.status(200).json({ message: "Done" });
+                });
                 transporter.sendMail(mailOptions, async function (error, info) {
                   if (error) {
                     console.log(error);
