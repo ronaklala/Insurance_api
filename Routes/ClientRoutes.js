@@ -217,17 +217,14 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
                   newcontact.save().then(() => {
                     res.status(200).json({ message: "Done" });
                   });
-                  transporter.sendMail(
-                    mailOptions,
-                    async function (error, info) {
-                      if (error) {
-                        console.log(error);
-                      } else {
-                        console.log("Mail Sent" + info);
-                      }
-                    }
-                  );
                 }
+                transporter.sendMail(mailOptions, async function (error, info) {
+                  if (error) {
+                    console.log(error);
+                  } else {
+                    console.log("Mail Sent" + info);
+                  }
+                });
               }
             })
             .catch((err) => {
