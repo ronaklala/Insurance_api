@@ -1985,7 +1985,7 @@ router.post("/client/agent/get/:cat/:type/:city/:id", (req, res) => {
       port: 465,
       auth: {
         user: "insuranceproject377@gmail.com",
-        pass: "elpgvsftguesyvcy",
+        pass: "dapfwnqlvwefjcun",
       },
     });
     transporter.verify((err, success) => {
@@ -2191,7 +2191,7 @@ router.post("/get_mail/:id", (req, res) => {
           port: 465,
           auth: {
             user: "insuranceproject377@gmail.com",
-            pass: "elpgvsftguesyvcy",
+            pass: "dapfwnqlvwefjcun",
           },
         });
         transporter.verify((err, success) => {
