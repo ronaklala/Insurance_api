@@ -34,7 +34,7 @@ router.post("/agent/agent_register", (req, res) => {
               port: 465,
               auth: {
                 user: "insuranceproject377@gmail.com",
-                pass: "elpgvsftguesyvcy",
+                pass: "dapfwnqlvwefjcun",
               },
             });
 
@@ -1056,7 +1056,7 @@ router.post("/agent/StartWork/:id/:agent", (req, res) => {
                 port: 465,
                 auth: {
                   user: "insuranceproject377@gmail.com",
-                  pass: "elpgvsftguesyvcy",
+                  pass: "dapfwnqlvwefjcun",
                 },
               });
               transporter.verify((err, success) => {
@@ -1227,7 +1227,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             port: 465,
             auth: {
               user: "insuranceproject377@gmail.com",
-              pass: "elpgvsftguesyvcy",
+              pass: "dapfwnqlvwefjcun",
             },
             secure: true,
             host: "smtp.gmail.com",
@@ -2175,7 +2175,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             port: 465,
             auth: {
               user: "insuranceproject377@gmail.com",
-              pass: "elpgvsftguesyvcy",
+              pass: "dapfwnqlvwefjcun",
             },
             secure: true,
             host: "smtp.gmail.com",
@@ -3123,7 +3123,7 @@ router.get("/success_payment/:plan/:aid/:rand", (req, res) => {
             port: 465,
             auth: {
               user: "insuranceproject377@gmail.com",
-              pass: "elpgvsftguesyvcy",
+              pass: "dapfwnqlvwefjcun",
             },
             secure: true,
             host: "smtp.gmail.com",
